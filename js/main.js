@@ -4,7 +4,8 @@ var words = ["furnish", "happyness", "grutt"]; // Words wich the cmp will have t
 var chances = 7; // Nb of chances the player can have.
 var versus = {
     originalWord : "",
-    transformedWord : []
+    transformedWord : [],
+    userLetter : ""
 };
 var letters = []; // contiendra toutes les lettres de l'aphabet
 
@@ -46,13 +47,29 @@ function askVerif(){
     }while(!userLetter);
 }
 
+// compare letter from user with one of the original word letter
+function compare(character){
+    for(var letter in versus.originalWord) {
+        if(versus.originalWord[letter] === character){
+            versus.transformedWord[letter] = character;
+        }
+        else {
+            chances--;
+        }
+    }
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~ CODE ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 alert("Welcome to our brand new game\n                                    THE HANGMAN GAME\n\nPlease enter your fate and see how will it end, mouhahahahahaha !!!");
 versus.originalWord = cmpChoseWord();
 magicWord(versus.originalWord);
-alert(versus.originalWord + " : " + versus.transformedWord);
+alert(versus.originalWord + " : " + versus.transformedWord); // optional
 alphabet(); // initialise the alphabet tab in letters
-alert(letters);
-alert(askVerif());
-alert(letters);
+alert(letters); // optional
+versus.userLetter = askVerif();
+alert(versus.userLetter); // optional
+alert(letters); // optional
+compare(versus.userLetter);
+alert(versus.originalWord + " : " + versus.transformedWord); // optional
+alert(letters); // optional
