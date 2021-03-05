@@ -49,14 +49,59 @@ function askVerif(){
 
 // compare letter from user with one of the original word letter
 function compare(character){
+    let pointer = false;
     for(var letter in versus.originalWord) {
         if(versus.originalWord[letter] === character){
             versus.transformedWord[letter] = character;
-        }
-        else {
-            chances--;
+            pointer = true;
         }
     }
+
+    alert("Lettre choisie : " + versus.userLetter); // optional
+    alert("Mot à trouver : " + versus.originalWord + "\nLettres encore à trouver : " + versus.transformedWord); // optional
+    alert("Lettres restantes 2: " + letters); // optional
+
+    if(!pointer){
+        chances--;
+        switch(chances) {
+            case 6:    
+                alert("You missed !" + "\n+----+" + "\n |       |" + "\n         |" + "\n         |" + "\n         |" + "\n         |" + "\n=====");
+                break;
+            case 5:    
+                alert("You lose !" + "\n+----+" + "\n |       |" + "\nO      |" + "\n         |" + "\n         |" + "\n         |" + "\n=====");
+                break;
+            case 4:    
+                alert("You lose !" + "\n+----+" + "\n |       |" + "\nO      |" + "\n |       |" + "\n         |" + "\n         |" + "\n=====");
+                break;
+            case 3:    
+                alert("You lose !" + "\n+----+" + "\n |       |" + "\nO      |" + "\n/|       |" + "\n         |" + "\n         |" + "\n=====");
+                break;
+            case 2:    
+                alert("You lose !" + "\n+----+" + "\n |       |" + "\nO      |" + "\n/|\\     |" + "\n         |" + "\n         |" + "\n=====");
+                break;
+            case 1:    
+                alert("You lose !" + "\n+----+" + "\n |       |" + "\nO      |" + "\n/|\\     |" + "\n/       |" + "\n         |" + "\n=====");
+                break;
+            case 0:    
+                alert("You've lost, Too bad !" + "\n+----+" + "\n |       |" + "\nO      |" + "\n/|\\     |" + "\n/ \\     |" + "\n         |" + "\n=====");
+                alert("END OF THE GAME");
+                return false;
+            default:
+                return true;
+        }
+    }
+    return true;
+}
+
+// loot function to validate still chances or not
+function stillChances() {
+    let verif = true;
+    while(verif) {
+        versus.userLetter = askVerif();
+        verif = compare(versus.userLetter);
+        alert("Sortie de la boucle compare : " + verif);
+    }
+    alert("on passe le test");
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~ CODE ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,9 +112,4 @@ magicWord(versus.originalWord);
 alert(versus.originalWord + " : " + versus.transformedWord); // optional
 alphabet(); // initialise the alphabet tab in letters
 alert(letters); // optional
-versus.userLetter = askVerif();
-alert(versus.userLetter); // optional
-alert(letters); // optional
-compare(versus.userLetter);
-alert(versus.originalWord + " : " + versus.transformedWord); // optional
-alert(letters); // optional
+stillChances();
