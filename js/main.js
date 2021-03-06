@@ -1,11 +1,11 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~ GLOBAL VARS ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-var words = ["furnish", "happyness", "grutt"]; // Words wich the cmp will have the choce to take.
+var words = ["furnish", "happyness", "grutt", "adventure", "mississipî", "loop", "gordon"]; // Words wich the cmp will have the choce to take.
 var chances = 7; // Nb of chances the player can have.
 var versus = {
-    originalWord : "",
-    transformedWord : [],
-    userLetter : ""
+    originalWord : "", // stocks the original word
+    transformedWord : [], // stocks the transformed word with _
+    userLetter : "" // stocks the letter choosed by the user
 };
 var letters = []; // contiendra toutes les lettres de l'aphabet
 
@@ -36,13 +36,15 @@ function alphabet() {
 function askVerif(){
     let userLetter = false;
     do {
-        userLetter = prompt(`Time to play, you still have ${chances} chances to go !!!\nIt's up to you to give the first letter of you choice :`).toLocaleLowerCase();
+        userLetter = prompt(`Time to play, you still have ${chances} chances to go !!!\n\nKnowing that you still have not tryed those letters :\n                          ${letters}\n\nIt's up to you to give the letter of you choice :`).toLocaleLowerCase();
+        alert("You choosed : " + userLetter);
         for(var lettre of letters){
             if(userLetter === lettre) {
                 letters.splice(letters.indexOf(lettre), 1); // Suppr the lettre from the alphabet array
                 return userLetter;
             }
         }
+        alert("The '" + userLetter + "' letter is not playble or already used.");
         userLetter = false;
     }while(!userLetter);
 }
@@ -56,14 +58,11 @@ function compare(character){
             pointer = true;
         }
     }
-
-    alert("Lettre choisie : " + versus.userLetter); // optional
-    alert("Mot à trouver : " + versus.originalWord + "\nLettres encore à trouver : " + versus.transformedWord); // optional
-    alert("Lettres restantes 2: " + letters); // optional
+    alert("Aknowledge the actual state of your marvelous discovery : \n                       " + versus.transformedWord);
 
     if(!pointer){
         chances--;
-        switch(chances) {
+        switch(chances) { // draw the hagman step by step
             case 6:    
                 alert("You missed !" + "\n+----+" + "\n |       |" + "\n         |" + "\n         |" + "\n         |" + "\n         |" + "\n=====");
                 break;
@@ -84,13 +83,12 @@ function compare(character){
                 break;
             case 0:    
                 alert("You've lost, Too bad !" + "\n+----+" + "\n |       |" + "\nO      |" + "\n/|\\     |" + "\n/ \\     |" + "\n         |" + "\n=====");
-                alert("END OF THE GAME");
-                return false;
+                return false; // end the loop in stillChances
             default:
-                return true;
+                return true; // continue the loop in stillChances
         }
     }
-    return true;
+    return completed(); // send false to compare loop that sends false to stillChances => print end of the game
 }
 
 // loot function to validate still chances or not
@@ -99,9 +97,24 @@ function stillChances() {
     while(verif) {
         versus.userLetter = askVerif();
         verif = compare(versus.userLetter);
-        alert("Sortie de la boucle compare : " + verif);
     }
-    alert("on passe le test");
+    alert("END OF THE GAME");
+}
+
+// loot to see if word is completed
+function completed() {
+    let remadeWord = "";
+    // loop to recreate the original word to compare
+    for(let letter of versus.transformedWord) {
+        remadeWord += letter;
+    }
+    if(versus.originalWord === remadeWord){
+        alert("Wow you did it !\nYou're free now, lucky you survived this deadly game !");
+        return false; // send false to compare loop that sends false to stillChances => print end of the game
+    }
+    else {
+        return true; // send true to compare loop that sends true to stillChances => continue asking letters
+    }
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~ CODE ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -109,7 +122,5 @@ function stillChances() {
 alert("Welcome to our brand new game\n                                    THE HANGMAN GAME\n\nPlease enter your fate and see how will it end, mouhahahahahaha !!!");
 versus.originalWord = cmpChoseWord();
 magicWord(versus.originalWord);
-alert(versus.originalWord + " : " + versus.transformedWord); // optional
 alphabet(); // initialise the alphabet tab in letters
-alert(letters); // optional
 stillChances();
