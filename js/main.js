@@ -1,6 +1,6 @@
 //~~~~~~~~~~~~~~~~~~~~~~~~~ GLOBAL VARS ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-var words = ["furnish", "happyness", "grutt", "adventure", "mississipî", "loop", "gordon"]; // Words wich the cmp will have the choce to take.
+var words = ["furnish", "happyness", "groot", "adventure", "mississipî", "loop", "gordon"]; // Words wich the cmp will have the choce to take.
 var chances = 7; // Nb of chances the player can have.
 var versus = {
     originalWord : "", // stocks the original word
@@ -120,9 +120,26 @@ function completed() {
     }
 }
 
+// function begining to let user chose what to do at the start
+function start() {
+    let selection = prompt("Welcome to our brand new game\n                                    THE HANGMAN GAME\n\nWE, who will test you, will let you a first easy choise :\nType one of those letter to continue.\n\n                       'p' = play\n                       'r' = rules\r                       'q' = quit").toLowerCase();
+    while(selection || !selection) {
+        if(selection === "r") {
+            alert("The rules are simple :\n - WE chose a word you won't notice,\n - You will have 7 chances to guess the word, one letter at a time,\n - each letter you find, WE will show you the word with only your so found lettres appearing,\n - each time you guess wrong, 1 chance you'll lose, one step closer you are to your pitifull end,\n - if you find every letter before you use all your chances, you win,\n - otherwise, you'll die.\n\nSo, take your time, because every step is risky.");
+        }else if(selection === "p") {
+            alert("Please enter your fate and see how will it end, mouhahahahahaha !!!");
+            return true;
+        }else if(selection === "q") {
+            return false;
+        }
+        selection = prompt("WE sayed :\n\nType one of those letter to continue.\n                       'p' = play\n                       'r' = rules\r                       'q' = quit").toLowerCase();
+    }
+}
+
 //~~~~~~~~~~~~~~~~~~~~~~~~~ CODE ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-alert("Welcome to our brand new game\n                                    THE HANGMAN GAME\n\nPlease enter your fate and see how will it end, mouhahahahahaha !!!");
+//alert("Welcome to our brand new game\n                                    THE HANGMAN GAME\n\nPlease enter your fate and see how will it end, mouhahahahahaha !!!");
+reboot = start();
 
 while(reboot){
     versus.originalWord = cmpChoseWord();
