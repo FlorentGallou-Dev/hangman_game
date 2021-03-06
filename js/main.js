@@ -7,7 +7,9 @@ var versus = {
     transformedWord : [], // stocks the transformed word with _
     userLetter : "" // stocks the letter choosed by the user
 };
-var letters = []; // contiendra toutes les lettres de l'aphabet
+var letters = []; // will sock all alphabet letters
+
+var reboot = true; // the reboot pointer
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~ FUNCTIONS ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -99,6 +101,7 @@ function stillChances() {
         verif = compare(versus.userLetter);
     }
     alert("END OF THE GAME");
+    return prompt("Would you like to put your life on the edge for glory again ???\n\nType :\n      'y' for yes i'm a player\n                            or\n      'n' for no i'm good as safe now");
 }
 
 // loot to see if word is completed
@@ -120,7 +123,26 @@ function completed() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~ CODE ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 alert("Welcome to our brand new game\n                                    THE HANGMAN GAME\n\nPlease enter your fate and see how will it end, mouhahahahahaha !!!");
-versus.originalWord = cmpChoseWord();
-magicWord(versus.originalWord);
-alphabet(); // initialise the alphabet tab in letters
-stillChances();
+
+while(reboot){
+    versus.originalWord = cmpChoseWord();
+    magicWord(versus.originalWord);
+    alphabet(); // initialise the alphabet tab in letters
+    reboot = stillChances();
+    // here we test reboot that may contain y of n to loop on not
+    if(reboot === "y"){
+        reboot = true;
+        // reinitilize every vars
+        chances = 7;
+        versus.originalWord = "";
+        versus.transformedWord = [];
+        versus.userLetter = "";
+        alert("All right, you like dangerous games, let's play rougth again !");
+    }
+    else {
+        reboot = false;
+        alert("You choosed... wisely ! You make you way back with a satisfying taste of victory :)");
+    }
+}
+
+alert("Goodby !!!");
